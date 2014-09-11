@@ -17,6 +17,8 @@ if ( ! class_exists( 'tablecloth' ) ) {
 
         public $js_dir;
 
+        public $css_dir;
+
         public function __construct() {
 
             $this->js_dir  = dirname( __FILE__ ) . '/source/assets/js';
@@ -34,8 +36,16 @@ if ( ! class_exists( 'tablecloth' ) ) {
             add_shortcode( 'tablecloth' , array( $this, 'shortcode') );
         }
 
-        public function shortcode() {
+        public function shortcode( $atts = null, $content = '' ) {
 
+            $this->init_tablecloth();
+
+            return '<div class="tableloth-container">' . $content . '</div>';
+        }
+
+        public function init_tablecloth() {
+            add_action('wp_enqueue_styles', array($this, 'enqueue_styles'));
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         }
 
         public function register_styles() {
@@ -80,9 +90,6 @@ if ( ! class_exists( 'tablecloth' ) ) {
                 ),
                 false
             );
-
-
-
         }
 
         public function register_scripts() {
@@ -126,8 +133,40 @@ if ( ! class_exists( 'tablecloth' ) ) {
                 true
             );
 
+            // Tablecloth Call
+            wp_register_script(
+                self::PLUGIN_NAME . '-clothed',
+                dirname( __FILE__ ) . '/assets/clothed.js',
+                array(
+                    'jquery',
+                    self::PLUGIN_NAME . '-bootstrap',
+                    self::PLUGIN_NAME . '-metadata',
+                    self::PLUGIN_NAME . '-tablesorter',
+                    self::PLUGIN_NAME
+                ),
+                false,
+                true
+            );
+
+        }
+
+        public function enqueue_styles() {
+            wp_enqueue_style(self::PLUGIN_NAME . '-bootstrap');
+            wp_enqueue_style(self::PLUGIN_NAME . '-bootstrap-responsive');
+            wp_enqueue_style(self::PLUGIN_NAME);
+            wp_enqueue_style(self::PLUGIN_NAME . '-prettify');
+        }
+
+        public function enqueue_scripts() {
+            wp_enqueue_script(self::PLUGIN_NAME . '-bootstrap');
+            wp_enqueue_script(self::PLUGIN_NAME . '-metadata');
+            wp_enqueue_script(self::PLUGIN_NAME . '-tablesorter');
+            wp_enqueue_script(self::PLUGIN_NAME);
+            wp_enqueue_script(self::PLUGIN_NAME . '-clothed');
         }
 
     }
 
 }
+
+new tablecloth;
