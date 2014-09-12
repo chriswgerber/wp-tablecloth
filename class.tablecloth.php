@@ -13,27 +13,40 @@ if ( ! class_exists( 'tablecloth' ) ) {
 
     class tablecloth {
 
+        /**
+         * @const PLUGIN_NAME Name of the plugin
+         */
         CONST PLUGIN_NAME = 'tablecloth';
 
+        /**
+         * @const PLUGIN_VER Version number for the plugin
+         */
+        CONST PLUGIN_VER  = '0.0.1-alpha';
+
+        /**
+         * @var string $js_dir Directory for tablecloth JS files
+         */
         public $js_dir;
 
+        /**
+         * @var string $css_dir Directory for tablecloth CSS files
+         */
         public $css_dir;
 
+        /**
+         * Constructor
+         *
+         * Begins registering scripts and preparing variables.
+         */
         public function __construct() {
 
             $this->js_dir  = dirname( __FILE__ ) . '/source/assets/js';
             $this->css_dir = dirname( __FILE__ ) . '/source/assets/css';
 
-            $this->init();
-        }
-
-        private function init() {
             // Register Styles
             add_action( 'wp_enqueue_styles', array($this, 'register_styles') );
             // Register Scripts
             add_action( 'wp_enqueue_scripts', array($this, 'register_scripts') );
-
-            add_shortcode( 'tablecloth' , array( $this, 'shortcode') );
         }
 
         public function shortcode( $atts = null, $content = '' ) {
@@ -163,6 +176,10 @@ if ( ! class_exists( 'tablecloth' ) ) {
             wp_enqueue_script(self::PLUGIN_NAME . '-tablesorter');
             wp_enqueue_script(self::PLUGIN_NAME);
             wp_enqueue_script(self::PLUGIN_NAME . '-clothed');
+        }
+
+        static function add_shortcode() {
+            add_shortcode( 'tablecloth' , array( __CLASS__, 'shortcode') );
         }
 
     }
