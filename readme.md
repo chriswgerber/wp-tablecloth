@@ -1,7 +1,9 @@
 TableCloth - WordPress
 ==========================================
 
-A plugin for WordPress that utilizes Brian Sewell's Tablecloth.js.
+A plugin for WordPress that utilizes TableCloth, a JS and CSS plugin built by Alen Grakalic.
+
+To add style to any table, wrap in \[tablecloth\]\[/tablecloth\] shortcode.
 
 ## [Tablecloth.js][tablecloth] ##
 
@@ -9,6 +11,8 @@ If you have any questions, feel free to contact me.
 
 ## Version ##
 
-\# 0.0.1-alpha
+**\# 0.1.0**
 
-[tablecloth]: https://github.com/bwsewell/tablecloth
+Initial Release.
+
+[tablecloth]: http://cssglobe.com/lab/tablecloth/

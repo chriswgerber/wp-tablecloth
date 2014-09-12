@@ -3,7 +3,7 @@
  * Plugin Name: TableCloth
  * Plugin URI: http://wwww.chriswgerber.com/tablecloth-plugin/
  * Description: Creating beautiful interactive tables.
- * Version: 0.0.1-alpha
+ * Version: 0.1.0
  * Author: Christopher Gerber
  * Author URI: http://www.chriswgerber.com/
  * License: GPL2
@@ -21,7 +21,7 @@ if ( ! class_exists( 'tablecloth' ) ) {
         /**
          * @const PLUGIN_VER Version number for the plugin
          */
-        CONST PLUGIN_VER  = '0.0.1-alpha';
+        CONST PLUGIN_VER  = '0.1.0';
 
         /**
          * @var string $asset_uri Directory for tablecloth JS files
@@ -36,24 +36,38 @@ if ( ! class_exists( 'tablecloth' ) ) {
         public function __construct() {
 
             $this->asset_uri = plugins_url('', __FILE__) . '/assets';
-            // Register Scripts
+
             add_action( 'wp_enqueue_scripts', array($this, 'register_scripts') );
 
-            add_action( 'wp', array($this, 'your_prefix_detect_shortcode') );
+            add_action( 'wp', array($this, 'detect_shortcode') );
 
             // Create Shortcode
             add_shortcode('tablecloth' , array($this, 'shortcode'));
         }
 
+        /**
+         * Creates the shortcode to wrap around the table.
+         *
+         * @param null   $atts
+         * @param string $content
+         *
+         * @return string
+         */
         public function shortcode( $atts = null, $content = '' ) {
 
             return '<div class="tablecloth-container">' . $content . '</div>';
         }
 
+        /**
+         * Code to run if the tablecloth is to be run.
+         */
         public function init_tablecloth() {
             add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         }
 
+        /**
+         * Registers the scripts and styles
+         */
         public function register_scripts() {
             // CSS
             wp_register_style(
@@ -72,17 +86,21 @@ if ( ! class_exists( 'tablecloth' ) ) {
             );
         }
 
+        /**
+         * Enqueues scripts and styles.
+         */
         public function enqueue_scripts() {
             wp_enqueue_style(self::PLUGIN_NAME . '-tablecloth');
             wp_enqueue_script(self::PLUGIN_NAME . '-clothed');
         }
 
-        public function your_prefix_detect_shortcode() {
+        /**
+         * Check to see if shortcode exists in any of the post objects.
+         */
+        public function detect_shortcode() {
             global $wp_query;
             $posts = $wp_query->posts;
             $pattern = get_shortcode_regex();
-
-
             foreach ($posts as $post){
                 if (   preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
                        && array_key_exists( 2, $matches )
@@ -94,9 +112,7 @@ if ( ! class_exists( 'tablecloth' ) ) {
                 }
             }
         }
-
     }
-
 }
 
 new tablecloth;
