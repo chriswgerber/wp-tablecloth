@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: TableCloth
- * Plugin URI: http://wwww.chriswgerber.com/tablecloth-plugin/
+ * Plugin URI: https://github.com/ThatGerber/wp-tablecloth
  * Description: Creating beautiful interactive tables.
  * Version: 0.1.0
  * Author: Christopher Gerber
